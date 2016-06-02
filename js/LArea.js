@@ -15,6 +15,8 @@
  *
  */
 window.LArea = (function() {
+    var BEFORE_SELECT_VALUE = 'BEFORE_SELECT_VALUE';
+    var AFTER_SELECT_VALUE  = 'AFTER_SELECT_VALUE';
     var MobileArea = function() {
         this.gearArea;
         this.data;
@@ -140,6 +142,9 @@ window.LArea = (function() {
                         break
                     }
                 }
+                // mark BEFORE_SELECT_VALUE
+                BEFORE_SELECT_VALUE = target.getAttribute('val');
+                
                 clearInterval(target["int_" + target.id]);
                 target["old_" + target.id] = e.targetTouches[0].screenY;
                 target["o_t_" + target.id] = (new Date()).getTime();
@@ -240,6 +245,10 @@ window.LArea = (function() {
             function setGear(target, val) {
                 val = Math.round(val);
                 target.setAttribute("val", val);
+                // mark AFTER_SELECT_VALUE
+                AFTER_SELECT_VALUE = target.getAttribute('val');
+                if(AFTER_SELECT_VALUE === BEFORE_SELECT_VALUE || AFTER_SELECT_VALUE==='NaN') return;
+
                 switch (_self.type) {
                     case 1:
                          _self.setGearTooth(_self.data);
